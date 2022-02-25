@@ -8,14 +8,14 @@ pragma solidity ^0.8.2;
  */
 
 contract BEP20Token {
-    mapping (address => uint256) private _balances;
-    
+    mapping (address => uint256) private _balances;    
     address private _owner;
     string private _name;
     string private _symbol;
     uint8 private _decimals;
     uint256 private _totalSuply;
-    
+
+    event Transfer(address indexed from, address indexed to, uint value);
 
     constructor() {
         _name = "iamhectorsvcoin";
@@ -54,6 +54,7 @@ contract BEP20Token {
         require(balanceOf(from) >= value, 'balance too low');
         _balances[to] += value;
         _balances[from] -= value;
+        emit Transfer(from, to, value);
         return true;
     }
 }
