@@ -16,6 +16,7 @@ contract BEP20Token {
     uint256 private _totalSuply;
 
     event Transfer(address indexed from, address indexed to, uint value);
+    event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 
     constructor() {
         _name = "iamhectorsvcoin";
@@ -57,4 +58,6 @@ contract BEP20Token {
         emit Transfer(from, to, value);
         return true;
     }
+
+    
 }
