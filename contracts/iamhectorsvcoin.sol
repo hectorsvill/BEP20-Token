@@ -10,6 +10,7 @@ pragma solidity ^0.8.2;
 contract BEP20Token {
     mapping (address => uint256) private _balances;
     
+    address private _owner;
     string private _name;
     string private _symbol;
     uint8 private _decimals;
@@ -20,9 +21,14 @@ contract BEP20Token {
         _name = "iamhectorsvcoin";
         _symbol = "hsvc";
         _decimals = 16;
-        _totalSuply = 1000000 ** 10 ** _decimals;
+        _totalSuply = 1000000 ** 10 * 16;
         _balances[msg.sender] = _totalSuply;
+        _owner =  msg.sender;
     }
+
+    function owner() public view returns (address) {
+        return _owner;
+    } 
 
     function name() public view returns (string memory) {
         return _name;
