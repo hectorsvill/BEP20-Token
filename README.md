@@ -20,6 +20,6 @@ npm install truffle
 npx truffle compile
 `
 ### start truffle
-'bash
+`bash
 npx truffle develop
-'
+`
