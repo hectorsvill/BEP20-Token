@@ -29,7 +29,7 @@ contract iamhectorsv is Ownable {
         _owner =  msg.sender;
     }
 
-    function owner() external view returns (address) {
+    function getOwner() external view returns (address) {
         return _owner;
     } 
 
@@ -60,5 +60,24 @@ contract iamhectorsv is Ownable {
         emit Transfer(from, to, value);
         return true;
     }
+
+    function mint(uint256 amount) public onlyOwner returns (bool) {
+        _mint(msg.sender, amount);
+        return true;
+    }
+
+    // mint token amount
+    function _mint(address account, uint256 amount) internal {
+        require(account != (address(0)), "BEP20: mint to the zero address");
+        amount = _amountToToken(amount);
+        _totalSuply += amount;
+        _balances[account] += amount;
+        emit Transfer(address(0), account, amount);
+    }
+
+    function _amountToToken(uint256 amount) internal pure returns (uint256) {
+        return amount ** 10 * 16;
+    }
+
 
 }

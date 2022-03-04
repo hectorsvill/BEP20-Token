@@ -1,4 +1,6 @@
-pragma solidity ^0.5.0;
+//SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.2; 
 
 /**
 * @title Ownable
@@ -14,7 +16,7 @@ contract Ownable {
         address indexed newOwner
     );
 
-    constructor() internal {
+    constructor() {
         _owner = msg.sender;
         emit OwnershipTransferred(address(0), _owner);
     }
