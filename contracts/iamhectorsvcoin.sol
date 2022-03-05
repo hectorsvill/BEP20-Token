@@ -69,15 +69,27 @@ contract iamhectorsv is Ownable {
     // mint token amount
     function _mint(address account, uint256 amount) internal {
         require(account != (address(0)), "BEP20: mint to the zero address");
+        
         amount = _amountToToken(amount);
-        _totalSuply += amount;
-        _balances[account] += amount;
+        
+        uint256 newTotalSuply = SafeMath.add(_totalSuply, amount);
+        _totalSuply = newTotalSuply;
+
+        uint256 newBalance = SafeMath.add(_balances[account], amount);
+        _balances[account] = newBalance;
+
         emit Transfer(address(0), account, amount);
     }
 
     function _amountToToken(uint256 amount) internal pure returns (uint256) {
         return amount ** 10 * 16;
     }
+}
 
-
+library SafeMath {
+    function add(uint256 a, uint256 b) internal pure returns (uint256) {
+        uint256 c = a + b;
+        require(c >= a, "SafeMath: addition overflow");
+        return c;
+    }
 }
