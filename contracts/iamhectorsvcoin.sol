@@ -3,13 +3,13 @@
 pragma solidity ^0.8.2; 
 
 import "./ownable.sol";
-
+import "./context.sol";
 /**
  * @title BEP20Token - iamhectorsv Token
  * @dev A BEP20 Token for the Binances Smart Chain
  */
 
-contract iamhectorsv is Ownable {
+contract iamhectorsv is Ownable, Context {
     mapping (address => uint256) internal _balances;    
     address private _owner;
     string private _name;
@@ -62,7 +62,7 @@ contract iamhectorsv is Ownable {
     }
 
     function mint(uint256 amount) public onlyOwner returns (bool) {
-        _mint(msg.sender, amount);
+        _mint(_msgSender(), amount);
         return true;
     }
 
