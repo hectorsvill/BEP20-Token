@@ -25,7 +25,7 @@ contract iamhectorsv is Ownable, Context {
         _name = "iamhectorsv";
         _symbol = "hsv";
         _decimals = 18;
-        _totalSuply = 5 * 10**uint256(_decimals);
+        _totalSuply = 42 * 10**uint256(_decimals);
         _balances[_msgSender()] = _totalSuply;
         _owner =  _msgSender();
 
@@ -89,6 +89,20 @@ contract iamhectorsv is Ownable, Context {
         _totalSuply = SafeMath.add(_totalSuply, amount);
         _balances[account] = SafeMath.add(_balances[account], amount);
         emit Transfer(address(0), account, amount);
+    }
+
+    function burn(uint256 amount) external onlyOwner {
+        uint256 checkNewTotal = SafeMath.sub(_totalSuply, amount);
+        require(checkNewTotal >= 42, "iamhectorsv: your burning too much");
+        _burn(_msgSender(), amount);
+    }
+
+    function _burn(address account, uint256 amount) internal {
+        require(account != address(0), "BEP20: burn from the zero address");
+        
+        _totalSuply = SafeMath.sub(_totalSuply, amount);
+        _balances[account] = SafeMath.sub(_balances[account], amount);
+        emit Transfer(account, address(0), amount);
     }
 
     function _amountToToken(uint256 amount) internal pure returns (uint256) {
