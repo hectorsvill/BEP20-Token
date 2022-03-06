@@ -18,7 +18,7 @@ contract iamhectorsv is Ownable, Context {
     uint8 private _decimals;
     uint256 private _totalSuply;
 
-    event Transfer(address indexed from, address indexed to, uint value);
+    event Transfer(address indexed sender, address indexed recipient, uint amount);
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 
     constructor() {
@@ -26,8 +26,10 @@ contract iamhectorsv is Ownable, Context {
         _symbol = "hsv";
         _decimals = 18;
         _totalSuply = 5 * 10**uint256(_decimals);
-        _balances[msg.sender] = _totalSuply;
-        _owner =  msg.sender;
+        _balances[_msgSender()] = _totalSuply;
+        _owner =  _msgSender();
+
+        emit Transfer(address(0), _msgSender(), _totalSuply);
     }
 
     function getOwner() external view returns (address) {
@@ -54,13 +56,25 @@ contract iamhectorsv is Ownable, Context {
         return _balances[account];
     }
 
-    function transferFrom(address from, address to, uint value) external returns (bool) {
-        require(_balances[from] >= value, 'balance too low');
-        _balances[to] += value;
-        _balances[from] -= value;
-        emit Transfer(from, to, value);
+    function transfer(address recipient, uint256 amount) external returns (bool) {
+        _transfer(_msgSender(), recipient, amount);
         return true;
     }
+
+    function transferFrom(address sender, address recipient, uint amount) external returns (bool) {
+        _transfer(sender, recipient, amount);
+        return true;
+    }
+
+    function _transfer(address sender, address recipient, uint256 amount) internal {
+        require(sender != address(0), "BEP20: transfer from zero address");
+        require(recipient != address(0), "BEP20: transfer from zero address");
+
+        _balances[sender] = SafeMath.sub(_balances[sender], amount);
+        _balances[recipient] = SafeMath.add(_balances[recipient], amount);
+        emit Transfer(sender , recipient, amount);
+    }
+
 
     function mint(uint256 amount) public onlyOwner returns (bool) {
         _mint(_msgSender(), amount);
@@ -86,6 +100,12 @@ library SafeMath {
     function add(uint256 a, uint256 b) internal pure returns (uint256) {
         uint256 c = a + b;
         require(c >= a, "SafeMath: addition overflow");
+        return c;
+    }
+
+    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
+        require(b <= a, "SafeMath: subtractioon overflow");
+        uint256 c = a - b;
         return c;
     }
 }
