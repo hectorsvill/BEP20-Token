@@ -4,6 +4,7 @@ pragma solidity ^0.8.2;
 
 import "./ownable.sol";
 import "./context.sol";
+
 /**
  * @title BEP20Token - iamhectorsv Token
  * @dev A BEP20 Token for the Binances Smart Chain
@@ -23,8 +24,8 @@ contract iamhectorsv is Ownable, Context {
     constructor() {
         _name = "iamhectorsv";
         _symbol = "hsv";
-        _decimals = 16;
-        _totalSuply = 1000000 ** 10 * uint(_decimals);
+        _decimals = 18;
+        _totalSuply = 5 * 10**uint256(_decimals);
         _balances[msg.sender] = _totalSuply;
         _owner =  msg.sender;
     }
@@ -41,7 +42,7 @@ contract iamhectorsv is Ownable, Context {
         return _symbol;
     }
 
-    function decimals() external view returns (uint8) {
+    function decimals() external view returns (uint) {
         return _decimals;
     }
 
@@ -69,20 +70,15 @@ contract iamhectorsv is Ownable, Context {
     // mint token amount
     function _mint(address account, uint256 amount) internal {
         require(account != (address(0)), "BEP20: mint to the zero address");
-        
+
         amount = _amountToToken(amount);
-        
-        uint256 newTotalSuply = SafeMath.add(_totalSuply, amount);
-        _totalSuply = newTotalSuply;
-
-        uint256 newBalance = SafeMath.add(_balances[account], amount);
-        _balances[account] = newBalance;
-
+        _totalSuply = SafeMath.add(_totalSuply, amount);
+        _balances[account] = SafeMath.add(_balances[account], amount);
         emit Transfer(address(0), account, amount);
     }
 
     function _amountToToken(uint256 amount) internal pure returns (uint256) {
-        return amount ** 10 * 16;
+        return amount * 10**18;
     }
 }
 
