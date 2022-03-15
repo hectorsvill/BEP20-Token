@@ -10,24 +10,27 @@ import "./context.sol";
  * @dev A BEP20 Token for the Binances Smart Chain
  */
 
-contract iamhectorsv is Ownable, Context {
+contract BEP20 is Ownable, Context {
     mapping (address => uint256) internal _balances;    
     address private _owner;
     string private _name;
     string private _symbol;
     uint8 private _decimals;
     uint256 private _totalSuply;
+    uint256 private _maxSuply;
 
     event Transfer(address indexed sender, address indexed recipient, uint amount);
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);
+    event Mint(address indexed _minter, uint _amount);
 
-    constructor() {
-        _name = "iamhectorsv";
-        _symbol = "hsv";
+    constructor(string memory _n, string memory _s) {
+        _name = _n;
+        _symbol = _s;
         _decimals = 18;
-        _totalSuply = 42 * 10**uint256(_decimals);
+        _maxSuply = 42000000;
+        _totalSuply = _maxSuply * 10**uint256(_decimals);
         _balances[_msgSender()] = _totalSuply;
-        _owner =  _msgSender();
+        _owner =  owner();
 
         emit Transfer(address(0), _msgSender(), _totalSuply);
     }
@@ -62,6 +65,7 @@ contract iamhectorsv is Ownable, Context {
     }
 
     function transferFrom(address sender, address recipient, uint amount) external returns (bool) {
+        require(_msgSender() == sender);
         _transfer(sender, recipient, amount);
         return true;
     }
