@@ -23,11 +23,11 @@ contract BEP20 is Ownable, Context {
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);
     event Mint(address indexed _minter, uint _amount);
 
-    constructor(string memory _n, string memory _s) {
-        _name = _n;
-        _symbol = _s;
+    constructor(string memory _tokenName, string memory _tokenSymbol, uint _tokenMaxSuply) {
+        _name = _tokenName;
+        _symbol = _tokenSymbol;
         _decimals = 18;
-        _maxSuply = 42000000;
+        _maxSuply = _tokenMaxSuply;
         _totalSuply = _maxSuply * 10**uint256(_decimals);
         _balances[_msgSender()] = _totalSuply;
         _owner =  owner();
