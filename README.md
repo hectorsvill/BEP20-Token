@@ -38,3 +38,7 @@ Contract module which provides a basic access control mechanism, where there is 
 #### context.sol
 
 Provides information about the current execution context, including the sender of the transaction and its data. While these are generally available via msg.sender and msg.data, they should not be accessed in such a direct manner.
+
+#### myPayment.sol
+
+The contract can receive eth and will record all transactios. The owner of the contract can withdraw funds at any time.
