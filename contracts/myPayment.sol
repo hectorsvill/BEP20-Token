@@ -12,7 +12,9 @@ import "./context.sol";
 
 contract MyPayment is Ownable, Context {
     mapping(address => uint) public addressToValue;
-    
+    event Pay(address indexed sender, uint amount);
+    event WithdrawBalance(uint amount);
+
     struct Transaction {
         address payer;
         uint value;
@@ -25,6 +27,7 @@ contract MyPayment is Ownable, Context {
         require(msg.value >= 1000);
         addressToValue[_msgSender()] += msg.value;
         transactions.push(Transaction(_msgSender(), msg.value, uint(block.timestamp)));
+        emit Pay(msg.sender, msg.value);
     }
 
     function getBalance() public view returns (uint) {
@@ -34,5 +37,6 @@ contract MyPayment is Ownable, Context {
     function withdrawBalanceFromContract() public onlyOwner {
         uint balance = getBalance();
         payable(owner()).transfer(balance);
+        emit WithdrawBalance(balance);
     } 
 } 
