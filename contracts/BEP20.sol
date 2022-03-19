@@ -11,6 +11,7 @@ import "./context.sol";
  */
 
 contract BEP20 is Ownable, Context {
+    using SafeMath for uint256;
     mapping (address => uint256) internal _balances;    
     address private _owner;
     string private _name;
@@ -74,8 +75,8 @@ contract BEP20 is Ownable, Context {
         require(sender != address(0), "BEP20: transfer from zero address");
         require(recipient != address(0), "BEP20: transfer from zero address");
 
-        _balances[sender] = SafeMath.sub(_balances[sender], amount);
-        _balances[recipient] = SafeMath.add(_balances[recipient], amount);
+        _balances[sender] = _balances[sender].sub(amount);
+        _balances[recipient] = _balances[recipient].add(amount);
         emit Transfer(sender , recipient, amount);
     }
 
@@ -90,13 +91,13 @@ contract BEP20 is Ownable, Context {
         require(account != (address(0)), "BEP20: mint to the zero address");
 
         amount = _amountToToken(amount);
-        _totalSuply = SafeMath.add(_totalSuply, amount);
-        _balances[account] = SafeMath.add(_balances[account], amount);
+        _totalSuply = _totalSuply.add(amount);
+        _balances[account] = _balances[account].add(amount);
         emit Transfer(address(0), account, amount);
     }
 
     function burn(uint256 amount) external onlyOwner {
-        uint256 checkNewTotal = SafeMath.sub(_totalSuply, amount);
+        uint256 checkNewTotal = _totalSuply.sub(amount);
         require(checkNewTotal >= 42, "iamhectorsv: your burning too much");
         _burn(_msgSender(), amount);
     }
@@ -104,8 +105,8 @@ contract BEP20 is Ownable, Context {
     function _burn(address account, uint256 amount) internal {
         require(account != address(0), "BEP20: burn from the zero address");
         
-        _totalSuply = SafeMath.sub(_totalSuply, amount);
-        _balances[account] = SafeMath.sub(_balances[account], amount);
+        _totalSuply = _totalSuply.sub(amount);
+        _balances[account] = _balances[account].sub(amount);
         emit Transfer(account, address(0), amount);
     }
 
