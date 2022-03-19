@@ -28,9 +28,9 @@ npx truffle develop
 
 # Contracts
 
-#### iamhectorsv
+#### BEP20.sol
 
-iamhectorsv token (hsv) is a BEP 20 Token on the Binance Smart Chain.
+BEP 20 Token for the Binance Smart Chain.
 - [BEP20: Tokens on Binance Smart Chain](https://github.com/bnb-chain/BEPs/blob/master/BEP20.md)
 
 #### ownable.sol
