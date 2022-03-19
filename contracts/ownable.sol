@@ -1,6 +1,8 @@
 //SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.2; 
+import "./context.sol";
+
 
 /**
  * @dev Contract module which provides a basic access control mechanism, where
@@ -15,7 +17,7 @@ pragma solidity ^0.8.2;
  * the owner.
  */
 
-contract Ownable {
+contract Ownable is Context{
     address private _owner;
 
     event OwnershipTransferred(
@@ -24,7 +26,8 @@ contract Ownable {
     );
 
     constructor() {
-        _owner = msg.sender;
+        address msgSender = _msgSender();
+        _owner = msgSender;
         emit OwnershipTransferred(address(0), _owner);
     }
  
@@ -33,12 +36,12 @@ contract Ownable {
     }
 
     modifier onlyOwner() {
-        require(isOwner());
+        require(isOwner(), 'Ownable: caller is not the owner');
         _;
     }
 
     function isOwner() public view returns(bool) {
-        return msg.sender == _owner;
+        return _msgSender() == _owner;
     }
 
     function renounceOwnership() public onlyOwner {
