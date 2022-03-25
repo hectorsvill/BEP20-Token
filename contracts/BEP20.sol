@@ -10,7 +10,7 @@ import "./context.sol";
  * @dev A BEP20 Token for the Binances Smart Chain
  */
 
-contract BEP20 is Ownable, Context {
+contract BEP20 is Ownable {
     using SafeMath for uint256;
     mapping (address => uint256) internal _balances;    
     address private _owner;
